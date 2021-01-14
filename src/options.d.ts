@@ -60,6 +60,8 @@ export interface FaviconWebpackPlugionOptions {
   outputPath?: string,
   /** Override the publicPath option usually read from webpack configuration */
   publicPath?: string,
+
+  statsFile?: string,
 }
 
 
@@ -69,4 +71,5 @@ export type FaviconWebpackPlugionInternalOptions = Required<Omit<FaviconWebpackP
   | 'devMode'
   | 'publicPath'
   | 'outputPath'
+  | 'statsFile'
 >> & FaviconWebpackPlugionOptions

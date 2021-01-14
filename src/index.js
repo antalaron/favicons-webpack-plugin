@@ -24,6 +24,7 @@ class FaviconsWebpackPlugin {
       inject: true,
       favicons: emptyFaviconsConfig,
       prefix: 'assets/',
+      statsFile: false,
       ...options
     };
   }
@@ -67,6 +68,18 @@ class FaviconsWebpackPlugin {
       'FaviconsWebpackPlugin',
       async compilation => {
         const faviconCompilation = this.generateFavicons(compilation);
+
+        if (this.options.statsFile !== false) {
+          faviconCompilation
+            .then(tags => {
+              const binaryContents = JSON.stringify({html: tags});
+              compilation.assets[this.options.statsFile] = {
+                source: () => binaryContents,
+                size: () => binaryContents.length
+              };
+            })
+            .catch(e => console.log(e));
+        }
 
         // Hook into the html-webpack-plugin processing and add the html
         const HtmlWebpackPlugin = compiler.options.plugins
