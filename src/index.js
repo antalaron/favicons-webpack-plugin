@@ -192,15 +192,23 @@ class FaviconsWebpackPlugin {
             .createHash('sha256')
             .update(content.toString('utf8'))
             .digest('hex');
-          const outputPath = compilation.mainTemplate.getAssetPath(
-            this.options.prefix,
-            {
-              hash,
-              chunk: {
-                hash
-              }
-            }
-          );
+          const outputPath = compilation.getAssetPath
+            ? compilation.getAssetPath(
+              this.options.prefix,
+              {
+                hash,
+                chunk: {
+                  hash
+                }
+              })
+            : compilation.mainTemplate.getAssetPath(
+              this.options.prefix,
+              {
+                hash,
+                chunk: {
+                  hash
+                }
+              });
           const logoOutputPath = `${outputPath +
             (outputPath.substr(-1) === '/' ? '' : '/')}favicon${faviconExt}`;
           compilation.assets[logoOutputPath] = {
